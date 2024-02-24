@@ -1,6 +1,7 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "lottery")
@@ -8,6 +9,8 @@ public class Lottery {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name = "lottery_ticket", length = 6) 
+    @Pattern(regexp = "\\d{6}")
     private String ticket;
     private Double price;
     private Integer amount;
