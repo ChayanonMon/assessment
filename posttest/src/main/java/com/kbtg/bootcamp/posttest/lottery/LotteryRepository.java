@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface LotteryRepository extends JpaRepository<Lottery, Long> {
     Optional<Lottery> findByTicket(String ticket);
 
-    List<Lottery> findByInventoryIdIn(List<String> ticketList);
+    List<Lottery> findByTicketIn(List<String> ticketList);
 }

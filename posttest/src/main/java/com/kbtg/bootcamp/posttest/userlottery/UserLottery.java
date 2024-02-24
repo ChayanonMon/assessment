@@ -12,6 +12,8 @@ public class UserLottery {
     private String userId;
     private String ticket;
 
+    public UserLottery() {}
+
     public UserLottery(String userId , String ticket) {
         this.userId = userId;
         this.ticket = ticket;
@@ -19,6 +21,10 @@ public class UserLottery {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUserId() {

@@ -15,8 +15,20 @@ public class Lottery {
     private Double price;
     private Integer amount;
 
+    public Lottery() {}
+
+    public Lottery(String ticket , Double price , Integer amount ) {
+        this.ticket = ticket;
+        this.price = price;
+        this.amount = amount;
+    }
+
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getTicket() {

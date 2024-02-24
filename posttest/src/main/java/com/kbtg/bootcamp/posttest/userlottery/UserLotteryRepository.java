@@ -19,6 +19,6 @@ public interface UserLotteryRepository extends JpaRepository<UserLottery, Long> 
 
     @Modifying
     @Transactional
-    @Query(value = "DELETE FROM UserLottery WHERE userId = ?1 AND ticket = ?2", nativeQuery = true)
+    @Query(value = "DELETE FROM user_lottery WHERE user_id = ?1 AND ticket = ?2", nativeQuery = true)
     void deleteUserLotteryByTicket(String userId , String ticket);
 }

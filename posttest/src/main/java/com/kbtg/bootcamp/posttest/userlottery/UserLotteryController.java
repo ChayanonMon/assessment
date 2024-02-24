@@ -22,7 +22,7 @@ public class UserLotteryController {
     }
 
     @PostMapping("/{userId}/lotteries/{ticketId}")
-    public ResponseUserLotteryId buyUserLotteryByTicketId(@Pattern(regexp = "\\d{10}") @PathVariable String userId ,@Pattern(regexp = "\\d{6}") @PathVariable String ticketId) {
+    public ResponseUserLotteryId buyUserLotteryByTicketId(@Pattern(regexp = "\\d{10}") @PathVariable String userId ,@Pattern(regexp = "\\d{6}") @PathVariable String ticketId) throws Exception {
         String id = userLotteryService.buyUserLotteryByTicketId(userId, ticketId);
         return new ResponseUserLotteryId(id);
     }

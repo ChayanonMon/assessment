@@ -3,6 +3,7 @@ package com.kbtg.bootcamp.posttest.userlottery;
 import java.util.List;
 import java.util.Optional;
 
+import com.kbtg.bootcamp.posttest.exception.BadRequestException;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,15 @@ public class UserLotteryService {
         this.lotteryRepository = lotteryRepository;
     }
 
-    public String buyUserLotteryByTicketId(String userId, String ticketId) {
+    public String buyUserLotteryByTicketId(String userId, String ticketId) throws Exception {
         Optional<UserLottery> optionalUserLottery = userLotteryRepository.findByUserIdAndTicket(userId, ticketId);
         if (optionalUserLottery.isPresent()) {
             return optionalUserLottery.get().getId().toString();
+        }
+
+        Optional<Lottery> optionalLottery = lotteryRepository.findByTicket(ticketId);
+        if (optionalLottery.isEmpty()) {
+            throw new BadRequestException("Ticket doest not existed");
         }
 
         UserLottery userLottery = new UserLottery(userId, ticketId);
@@ -33,7 +39,7 @@ public class UserLotteryService {
         List<String> tickets = userLotteryList.stream().map(UserLottery::getTicket).toList();
 
         Double cost = 0.0;
-        List<Lottery> lotteryList = lotteryRepository.findByInventoryIdIn(tickets);
+        List<Lottery> lotteryList = lotteryRepository.findByTicketIn(tickets);
         for (Lottery lottery : lotteryList) {
             cost += lottery.getPrice();
         }
