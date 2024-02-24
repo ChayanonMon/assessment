@@ -13,7 +13,7 @@ public class LotteryService {
                 Arrays.asList("000001", "000002", "123456"));
     }
 
-    public void addLottery(Lottery lottery) {
-
+    public String addLottery(Lottery lottery) {
+        return lottery.getTicket();
     }
 }

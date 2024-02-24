@@ -3,6 +3,8 @@ package com.kbtg.bootcamp.posttest.userlottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 
 import java.util.List;
+
+import jakarta.validation.constraints.Size;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -19,7 +21,7 @@ public class UserLotteryController {
     }
 
     @PostMapping("/{userId}/lotteries/{ticketId}")
-    public ResponseUserLotteryId buyUserLotteryByTicketId(@PathVariable Integer userId , @PathVariable String ticketId) {
+    public ResponseUserLotteryId buyUserLotteryByTicketId(@PathVariable Integer userId ,@Size(min = 6, max = 6) @PathVariable String ticketId) {
         String id = userLotteryService.buyUserLotteryByTicketId(userId, ticketId);
         return new ResponseUserLotteryId(id);
     }
@@ -31,7 +33,7 @@ public class UserLotteryController {
     }
 
     @DeleteMapping("/{userId}/lotteries/{ticketId}")
-    public ResponseLottery deleteUserLottery(@PathVariable Integer userId , @PathVariable String ticketId) {
+    public ResponseLottery deleteUserLottery(@PathVariable Integer userId ,@Size(min = 6, max = 6) @PathVariable String ticketId) {
          userLotteryService.deleteUserLottery(userId, ticketId);
          return new ResponseLottery(ticketId);
     }
