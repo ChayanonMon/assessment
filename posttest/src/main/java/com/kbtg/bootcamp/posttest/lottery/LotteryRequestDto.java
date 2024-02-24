@@ -3,11 +3,11 @@ package com.kbtg.bootcamp.posttest.lottery;
 import org.hibernate.validator.constraints.Range;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
 
 public class LotteryRequestDto {
     @NotNull
-    @Size(min = 6, max = 6, message = "Lottery ticket id length should be 6 characters")
+    @Pattern(regexp = "\\d{6}",  message = "Lottery ticket id length should be 6 characters")
     private String ticket;
 
     @NotNull
