@@ -10,8 +10,6 @@ public class UserLottery {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String userId;
-
-    @Column(unique=true)
     private String ticket;
 
     public UserLottery(String userId , String ticket) {
