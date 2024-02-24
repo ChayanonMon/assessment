@@ -10,10 +10,12 @@ public class UserLottery {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String userId;
+
+    @Column(unique=true)
     private String ticket;
 
-    public UserLottery(Integer id , String ticket) {
-        this.id = id;
+    public UserLottery(String userId , String ticket) {
+        this.userId = userId;
         this.ticket = ticket;
     }
 

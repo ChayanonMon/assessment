@@ -9,7 +9,7 @@ public class Lottery {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "lottery_ticket", length = 6) 
+    @Column(name = "lottery_ticket", length = 6, unique = true)
     @Pattern(regexp = "\\d{6}")
     private String ticket;
     private Double price;

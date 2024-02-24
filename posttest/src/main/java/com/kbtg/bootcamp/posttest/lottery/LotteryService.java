@@ -1,19 +1,31 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
-import org.springframework.stereotype.Component;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
-@Component
+@Service
 public class LotteryService {
-    public List<String> getLotteryList() {
-        return new ArrayList<>(
-                Arrays.asList("000001", "000002", "123456"));
+    private final LotteryRepository lotteryRepository;
+
+    public LotteryService(LotteryRepository lotteryRepository) {
+        this.lotteryRepository = lotteryRepository;
     }
 
-    public String addLottery(Lottery lottery) {
+    public List<String> getLotteryList() {
+        List<Lottery> lotteries = lotteryRepository.findAll();
+        return lotteries.stream().map(Lottery::getTicket).toList();
+    }
+
+    @Transactional
+    public String addLottery(Lottery lottery) throws Exception {
+        Optional<Lottery> optionalLottery = lotteryRepository.findByTicket(lottery.getTicket());
+        if (optionalLottery.isPresent()) {
+            return optionalLottery.get().getTicket();
+        }
+        lotteryRepository.save(lottery);
         return lottery.getTicket();
     }
 }
