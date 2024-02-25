@@ -1,6 +1,7 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Optional;
 public class LotteryService {
     private final LotteryRepository lotteryRepository;
 
+    @Autowired
     public LotteryService(LotteryRepository lotteryRepository) {
         this.lotteryRepository = lotteryRepository;
     }

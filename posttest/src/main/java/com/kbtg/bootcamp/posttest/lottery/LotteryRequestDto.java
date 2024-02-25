@@ -1,51 +1,26 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+@Getter
+@Setter
+@AllArgsConstructor
 public class LotteryRequestDto {
-    @NotNull
-    @Pattern(regexp = "\\d{6}",  message = "Lottery ticket id length should be 6 characters")
+    @NotNull(message = "Lottery ticket ID is required")
+    @Pattern(regexp = "\\d{6}", message = "Lottery ticket ID must be exactly 6 digits long")
     private String ticket;
 
-    @NotNull
-    @Range(min = 0, message = "Lottery price should not less than zero")
+    @NotNull(message = "Lottery price is required")
+    @Range(min = 0, message = "Lottery price must not be less than zero")
     private Double price;
 
-    @NotNull
-    @Range(min = 0, message = "Lottery amount should not less than zero")
+    @NotNull(message = "Lottery amount is required")
+    @Range(min = 0, message = "Lottery amount must not be less than zero")
     private Integer amount;
-
-    LotteryRequestDto(String ticket, Double price , Integer amount) {
-        this.ticket = ticket;
-        this.price = price;
-        this.amount = amount;
-    }
-
-    public String getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(String ticket) {
-        this.ticket = ticket;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
 }

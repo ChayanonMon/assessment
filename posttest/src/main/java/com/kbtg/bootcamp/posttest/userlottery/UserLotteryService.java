@@ -3,30 +3,50 @@ package com.kbtg.bootcamp.posttest.userlottery;
 import java.util.List;
 import java.util.Optional;
 
-import com.kbtg.bootcamp.posttest.exception.BadRequestException;
+import com.kbtg.bootcamp.posttest.exception.NotFoundException;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserLotteryService {
-    UserLotteryRepository userLotteryRepository;
-    LotteryRepository lotteryRepository;
+    private final UserLotteryRepository userLotteryRepository;
+    private final LotteryRepository lotteryRepository;
 
-    UserLotteryService(UserLotteryRepository userLotteryRepository, LotteryRepository lotteryRepository) {
+    public UserLotteryService(UserLotteryRepository userLotteryRepository, LotteryRepository lotteryRepository) {
         this.userLotteryRepository = userLotteryRepository;
         this.lotteryRepository = lotteryRepository;
     }
 
-    public String buyUserLotteryByTicketId(String userId, String ticketId) throws Exception {
+    @Transactional
+    public String buyUserLotteryByTicketId(String userId, String ticketId) {
         Optional<UserLottery> optionalUserLottery = userLotteryRepository.findByUserIdAndTicket(userId, ticketId);
-        if (optionalUserLottery.isPresent()) {
-            return optionalUserLottery.get().getId().toString();
-        }
+        return optionalUserLottery.map(userLottery -> userLottery.getId().toString())
+                .orElseGet(() -> createAndSaveUserLottery(userId, ticketId));
+    }
 
-        Optional<Lottery> optionalLottery = lotteryRepository.findByTicket(ticketId);
-        if (optionalLottery.isEmpty()) {
-            throw new BadRequestException("Ticket doest not existed");
+    public UserLotteryDetail getAllLotteryByUser(String userId) throws NotFoundException {
+        List<UserLottery> userLotteryList = userLotteryRepository.findByUserId(userId);
+        if (userLotteryList.isEmpty()) {
+            throw new NotFoundException("User does not exist: " + userId);
+        }
+        List<String> tickets = userLotteryList.stream().map(UserLottery::getTicket).toList();
+        double totalCost = calculateTotalCost(tickets);
+
+        return new UserLotteryDetail(tickets, tickets.size(), totalCost);
+    }
+
+    @Transactional
+    public String deleteUserLottery(String userId, String ticketId) {
+        userLotteryRepository.deleteUserLotteryByTicket(userId, ticketId);
+        return ticketId;
+    }
+
+    private String createAndSaveUserLottery(String userId, String ticketId) throws NotFoundException {
+        Optional<Lottery> lottery = lotteryRepository.findByTicket(ticketId);
+        if (lottery.isEmpty()) {
+            throw new NotFoundException("Ticket does not exist: " + ticketId);
         }
 
         UserLottery userLottery = new UserLottery(userId, ticketId);
@@ -34,21 +54,7 @@ public class UserLotteryService {
         return userLottery.getId().toString();
     }
 
-    public UserLotteryDetail getAllLotteryByUser(String userId) {
-        List<UserLottery> userLotteryList = userLotteryRepository.findByUserId(userId);
-        List<String> tickets = userLotteryList.stream().map(UserLottery::getTicket).toList();
-
-        Double cost = 0.0;
-        List<Lottery> lotteryList = lotteryRepository.findByTicketIn(tickets);
-        for (Lottery lottery : lotteryList) {
-            cost += lottery.getPrice();
-        }
-
-        return new UserLotteryDetail(tickets, tickets.size(), cost);
-    }
-
-    public String deleteUserLottery(String userId, String ticketId) {
-        userLotteryRepository.deleteUserLotteryByTicket(userId, ticketId);
-        return ticketId;
+    private Double calculateTotalCost(List<String> ticketIds) {
+        return lotteryRepository.findByTicketIn(ticketIds).stream().mapToDouble(Lottery::getPrice).sum();
     }
 }

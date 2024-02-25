@@ -2,56 +2,37 @@ package com.kbtg.bootcamp.posttest.lottery;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "lottery")
 public class Lottery {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "lottery_ticket", length = 6)
-    @Pattern(regexp = "\\d{6}")
+
+    @Column(length = 6, nullable = false)
+    @Pattern(regexp = "\\d{6}", message = "Ticket must be exactly 6 digits")
     private String ticket;
+
+    @Column(nullable = false)
+    @Range(min = 0, message = "Lottery price must not be less than zero")
     private Double price;
+
+    @Column(nullable = false)
+    @Range(min = 0, message = "Lottery amount must not be less than zero")
     private Integer amount;
 
-    public Lottery() {}
 
     public Lottery(String ticket , Double price , Integer amount ) {
         this.ticket = ticket;
         this.price = price;
-        this.amount = amount;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(String ticket) {
-        this.ticket = ticket;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 }

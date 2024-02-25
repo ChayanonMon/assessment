@@ -1,27 +1,18 @@
 package com.kbtg.bootcamp.posttest.userlottery;
 
+import lombok.Getter;
+
 import java.util.List;
 
+@Getter
 public class UserLotteryDetail {
-    private List<String> tickets;
-    private Integer count;
-    private Double cost;
+    private final List<String> tickets;
+    private final Integer count;
+    private final Double cost;
 
-    UserLotteryDetail(List<String> tickets, Integer count , Double cost) {
+    public UserLotteryDetail(List<String> tickets, Integer count , Double cost) {
         this.tickets = tickets;
         this.count = count;
         this.cost = cost;
-    }
-
-    public List<String> getTickets() {
-        return tickets;
-    }
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public Double getCost() {
-        return cost;
     }
 }
