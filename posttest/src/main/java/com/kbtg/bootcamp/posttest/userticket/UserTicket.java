@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.userlottery;
+package com.kbtg.bootcamp.posttest.userticket;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
@@ -10,8 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "user_lottery")
-public class UserLottery {
+@Table(name = "user_ticket")
+public class UserTicket {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class UserLottery {
     @Pattern(regexp = "\\d{6}", message = "Ticket must be exactly 6 digits")
     private String ticket;
 
-    public UserLottery(String userId , String ticket) {
+    public UserTicket(String userId , String ticket) {
         this.userId = userId;
         this.ticket = ticket;
     }
