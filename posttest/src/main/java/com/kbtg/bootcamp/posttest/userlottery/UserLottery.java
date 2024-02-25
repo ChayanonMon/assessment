@@ -8,17 +8,23 @@ public class UserLottery {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
     private String userId;
     private String ticket;
 
-    public UserLottery(String id , String ticket) {
-        this.id = id;
+    public UserLottery() {}
+
+    public UserLottery(String userId , String ticket) {
+        this.userId = userId;
         this.ticket = ticket;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUserId() {

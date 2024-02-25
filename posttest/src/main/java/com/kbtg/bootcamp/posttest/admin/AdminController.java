@@ -29,13 +29,13 @@ public class AdminController {
     }
 
     @PostMapping("/lotteries")
-    public ResponseLottery addLottery(@Valid @RequestBody LotteryRequestDto lotteryDto) {
+    public ResponseLottery addLottery(@Valid @RequestBody LotteryRequestDto lotteryDto) throws Exception {
         Lottery lottery = new Lottery();
         lottery.setTicket(lotteryDto.getTicket());
         lottery.setAmount(lotteryDto.getAmount());
         lottery.setPrice(lotteryDto.getPrice());
-        lotteryService.addLottery(lottery);
-        return new ResponseLottery(lotteryDto.getTicket());
+        String ticket = lotteryService.addLottery(lottery);
+        return new ResponseLottery(ticket);
     }
 }
 
